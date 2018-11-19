@@ -16,7 +16,7 @@ namespace TestPlantilla.Models
     {
         public fechaTramo()
         {
-            this.hojaRutas = new HashSet<hojaRuta>();
+            this.hojaRuta = new HashSet<hojaRuta>();
         }
     
         public int fechaIngreso { get; set; }
@@ -27,6 +27,6 @@ namespace TestPlantilla.Models
         public string cuatrimestre { get; set; }
         public string semestre { get; set; }
     
-        public virtual ICollection<hojaRuta> hojaRutas { get; set; }
+        public virtual ICollection<hojaRuta> hojaRuta { get; set; }
     }
 }

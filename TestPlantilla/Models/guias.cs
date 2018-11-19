@@ -12,19 +12,17 @@ namespace TestPlantilla.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class auxiliar
+    public partial class guias
     {
-        public auxiliar()
+        public guias()
         {
-            this.hojaRutaDetalle = new HashSet<hojaRutaDetalle>();
+            this.hojaRutaDetalleGuia = new HashSet<hojaRutaDetalleGuia>();
         }
     
-        public int run { get; set; }
-        public string rut { get; set; }
-        public string nombreRazonSocial { get; set; }
+        public int numeroGuia { get; set; }
+        public Nullable<System.DateTime> fechaIngreso { get; set; }
         public string direccion { get; set; }
-        public Nullable<int> telefono { get; set; }
     
-        public virtual ICollection<hojaRutaDetalle> hojaRutaDetalle { get; set; }
+        public virtual ICollection<hojaRutaDetalleGuia> hojaRutaDetalleGuia { get; set; }
     }
 }

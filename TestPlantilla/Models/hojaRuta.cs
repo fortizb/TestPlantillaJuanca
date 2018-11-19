@@ -16,9 +16,9 @@ namespace TestPlantilla.Models
     {
         public hojaRuta()
         {
-            this.colaboradorHojaRutas = new HashSet<colaboradorHojaRuta>();
-            this.costosHojaRutas = new HashSet<costosHojaRuta>();
-            this.hojaRutaDetalles = new HashSet<hojaRutaDetalle>();
+            this.colaboradorHojaRuta = new HashSet<colaboradorHojaRuta>();
+            this.costosHojaRuta = new HashSet<costosHojaRuta>();
+            this.hojaRutaDetalle = new HashSet<hojaRutaDetalle>();
         }
     
         public int idHojaRuta { get; set; }
@@ -28,11 +28,11 @@ namespace TestPlantilla.Models
         public Nullable<System.DateTime> fechaModificacion { get; set; }
         public Nullable<int> estado { get; set; }
     
-        public virtual ICollection<colaboradorHojaRuta> colaboradorHojaRutas { get; set; }
-        public virtual ICollection<costosHojaRuta> costosHojaRutas { get; set; }
+        public virtual ICollection<colaboradorHojaRuta> colaboradorHojaRuta { get; set; }
+        public virtual ICollection<costosHojaRuta> costosHojaRuta { get; set; }
         public virtual estadoHojaRuta estadoHojaRuta { get; set; }
         public virtual fechaTramo fechaTramo { get; set; }
         public virtual vehiculo vehiculo { get; set; }
-        public virtual ICollection<hojaRutaDetalle> hojaRutaDetalles { get; set; }
+        public virtual ICollection<hojaRutaDetalle> hojaRutaDetalle { get; set; }
     }
 }

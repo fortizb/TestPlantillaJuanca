@@ -16,12 +16,12 @@ namespace TestPlantilla.Models
     {
         public estadoHojaRuta()
         {
-            this.hojaRutas = new HashSet<hojaRuta>();
+            this.hojaRuta = new HashSet<hojaRuta>();
         }
     
         public int idEstadoHojaRuta { get; set; }
         public string descEstadoHojaRuta { get; set; }
     
-        public virtual ICollection<hojaRuta> hojaRutas { get; set; }
+        public virtual ICollection<hojaRuta> hojaRuta { get; set; }
     }
 }

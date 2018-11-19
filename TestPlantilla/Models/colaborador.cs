@@ -16,7 +16,7 @@ namespace TestPlantilla.Models
     {
         public colaborador()
         {
-            this.colaboradorHojaRutas = new HashSet<colaboradorHojaRuta>();
+            this.colaboradorHojaRuta = new HashSet<colaboradorHojaRuta>();
         }
     
         public int run { get; set; }
@@ -29,6 +29,6 @@ namespace TestPlantilla.Models
         public Nullable<int> telefono { get; set; }
         public Nullable<int> valorHoraExtra { get; set; }
     
-        public virtual ICollection<colaboradorHojaRuta> colaboradorHojaRutas { get; set; }
+        public virtual ICollection<colaboradorHojaRuta> colaboradorHojaRuta { get; set; }
     }
 }

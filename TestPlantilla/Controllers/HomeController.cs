@@ -10,7 +10,7 @@ namespace TestPlantilla.Controllers
 {
     public class HomeController : Controller
     {
-        dimacodevEntities db = new dimacodevEntities();
+        dimacodevEntities1 db = new dimacodevEntities1();
         public ActionResult Index()
         {
             return View();
@@ -20,20 +20,16 @@ namespace TestPlantilla.Controllers
         {
             ViewBag.Title = "Colaboradores";
             return View();
-        }
-
-       
+        }       
 
         public ActionResult HojaRuta()
         {
-
-
             return View();
         }
 
         public JsonResult GetColaboradorList()
         {
-            List<ColaboradorViewModel> colabList = db.colaboradors.Where(x=>x.cargo!=null).Select(x => new ColaboradorViewModel
+            List<ColaboradorViewModel> colabList = db.colaborador.Where(x=>x.cargo!=null).Select(x => new ColaboradorViewModel
             {
                 run = x.run,
                 rut = x.rut,
@@ -49,7 +45,7 @@ namespace TestPlantilla.Controllers
         }
         public JsonResult GetColaboradorByRun(int run)
         {
-            colaborador model = db.colaboradors.Where(x => x.run == run).SingleOrDefault();
+            colaborador model = db.colaborador.Where(x => x.run == run).SingleOrDefault();
             string value = string.Empty;
             value = JsonConvert.SerializeObject(model, Formatting.Indented, new JsonSerializerSettings
             {

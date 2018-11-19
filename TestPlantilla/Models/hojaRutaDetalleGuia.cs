@@ -21,7 +21,7 @@ namespace TestPlantilla.Models
         public string observaciones { get; set; }
     
         public virtual estadoEntrega estadoEntrega { get; set; }
-        public virtual guia guia { get; set; }
+        public virtual guias guias { get; set; }
         public virtual hojaRutaDetalle hojaRutaDetalle { get; set; }
     }
 }

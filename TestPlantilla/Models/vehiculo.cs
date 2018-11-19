@@ -16,7 +16,7 @@ namespace TestPlantilla.Models
     {
         public vehiculo()
         {
-            this.hojaRutas = new HashSet<hojaRuta>();
+            this.hojaRuta = new HashSet<hojaRuta>();
         }
     
         public string patente { get; set; }
@@ -28,6 +28,6 @@ namespace TestPlantilla.Models
         public Nullable<int> rendimiento { get; set; }
         public Nullable<int> capacidadCarga { get; set; }
     
-        public virtual ICollection<hojaRuta> hojaRutas { get; set; }
+        public virtual ICollection<hojaRuta> hojaRuta { get; set; }
     }
 }
