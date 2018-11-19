@@ -1,0 +1,150 @@
+﻿@model TestPlantilla.Models.ColaboradorViewModel
+@{
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <link href="~/Content/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" />
+        <div class="container">
+
+            <div class="row">
+                <div class="col">
+                    <h3 class="title-5 m-b-35" style="margin-top: 1em;">Gestión de colaboradores</h3>
+                </div>
+            </div>
+
+            <a href="#" class="btn btn-info" onclick="AddNewColaborador(0)">Add New Student</a> <br /><br />
+
+            <table class="table table-bordered table-striped tablecontainer" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>R.U.N.</th>
+                        <th>R.U.T.</th>
+                        <th>Nombre</th>
+                        <th>A. Paterno</th>
+                        <th>A. Materno</th>
+                        <th>Edad</th>
+                        <th>Cargo</th>
+                        <th>Teléfono</th>
+                        <th>Valor H/E</th>
+                        <th>Action(Edit)</th>
+                        <th>Action(Delete)</th>
+                    </tr>
+                </thead>
+                <tbody id="SetColaboradorList">
+                    <tr id="LoadingStatus" style="color:red"></tr>
+                </tbody>
+            </table>
+
+            <!--Modal Añadir Colaborador -->
+
+            <div class="modal fadeOut" id="MyModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <a href="#" class="close" data-dismiss="modal">&times;</a>
+                            <h4 id="ModalTitle"></h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="form">
+                                <fieldset id="SubmitForm">
+                                    @Html.HiddenFor(m => m.run, new { @id = "colabRun" })
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.rut, new { @id = "colabRut", @class = "form-control", @placeholder = "Rut*" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.nombre, new { @id = "colabNombre", @class = "form-control", @placeholder = "Nombre*" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.apellidoPaterno, new { @id = "colabApellidoPaterno", @class = "form-control", @placeholder = "Apellido Paterno*" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.apellidoMaterno, new { @id = "colabApellidoMaterno", @class = "form-control", @placeholder = "Apellido Materno*" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.edad, new { @id = "colabEdad", @class = "form-control", @placeholder = "Edad*" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.cargo, new { @id = "colabCargo", @class = "form-control", @placeholder = "Cargo*" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.telefono, new { @id = "colabTelefono", @class = "form-control", @placeholder = "Telefono*" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.valorHoraExtra, new { @id = "colabValorHoraExtra", @class = "form-control", @placeholder = "Valor Hora extra*" })
+                                    </div>
+
+                                    <div class="form-group">
+                                        <a href="#" class="btn btn-block btn-danger" id="GuardarColaborador">Guardar</a>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+ 
+}
+<script>
+    $("#LoadingStatus").html("Loading...");
+    $.get("/Home/GetColaboradorList", null, DataBind);
+    function DataBind(colabList) {
+        //This Code For Receive All Data From Controller And Show It In Client Side
+        var SetData = $("#SetColaboradorList");
+        for (var i = 0; i < 3; i++) {
+            var Data = "<tr class='row_" + colabList[i].run + "'>" +
+                "<td>" + colabList[i].run + "</td>" +
+                "<td>" + colabList[i].rut + "</td>" +
+                "<td>" + colabList[i].nombre + "</td>" +
+                "<td>" + colabList[i].apellidoPaterno + "</td>" +
+                "<td>" + colabList[i].apellidoMaterno + "</td>" +
+                "<td>" + colabList[i].edad + "</td>" +
+                "<td>" + colabList[i].cargo + "</td>" +
+                "<td>" + colabList[i].telefono + "</td>" +
+                "<td>" + colabList[i].valorHoraExtra + "</td>" +
+                "<td>" + "<a href='#' class='btn btn-warning' onclick='EditColaborador(" + colabList[i].run + ")' ><span class='glyphicon glyphicon-edit'></span></a>" + "</td>" +
+                "<td>" + "<a href='#' class='btn btn-danger' onclick='DeleteStudentRecord(" + colabList[i].run + ")'><span class='glyphicon glyphicon-trash'></span></a>" + "</td>" +
+                "</tr>";
+            SetData.append(Data);
+            $("#LoadingStatus").html(" ");
+
+        }
+    }
+
+    // Modal Agregar Colaborador
+
+    function AddNewColaborador(run) {
+        $("#form")[0].reset();
+        $("#colabRun").val(0);
+        $("#DropDwn option:selected").text("--Select Dept--");
+        $("#ModalTitle").html("Agregar Colaborador");
+        $("#MyModal").modal();
+
+    }
+
+    //Show The Popup Modal For Edit Student Record
+
+    function EditColaborador(run) {
+        var url = "/Home/GetColaboradorByRun?run=" + run;
+        $("#ModalTitle").html("Actualizar Datos de Colaboradores");
+        $("#MyModal").modal();
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                $("#colabRut").val(obj.rut);
+                $("#colabNombre").val(obj.nombre);
+                $("#colabApellidoPaterno").val(obj.apellidoPaterno);
+                $("#colabApellidoMaterno").val(obj.apellidoMaterno);
+                $("#colabEdad").val(obj.edad);
+                $("#colabCargo").val(obj.cargo);
+                $("#colabTelefono").val(obj.telefono);
+                $("#colabValorHoraExtra").val(obj.valorHoraExtra);
+                      
+            }
+        })
+    }
+</script>
+
+
