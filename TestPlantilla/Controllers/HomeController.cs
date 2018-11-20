@@ -54,14 +54,16 @@ namespace TestPlantilla.Controllers
             return Json(value, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GuardarColaborador(ColaboradorViewModel model)
+        public JsonResult GuardarColaboradorInDatabase(ColaboradorViewModel model)
         {
             var result = false;
             try
             {
-                if (model.run > 0)
+                colaborador colab = db.colaborador.Where(x => x.run == model.run).SingleOrDefault();
+                string value = string.Empty;
+                if (colab != null)
                 {
-                    colaborador col = db.colaborador.SingleOrDefault(x => x.run == model.run);
+                    colaborador col = db.colaborador.SingleOrDefault(s => s.run == model.run);
                     col.rut = model.rut;
                     col.nombre = model.nombre;
                     col.apellidoPaterno = model.apellidoPaterno;
@@ -84,7 +86,7 @@ namespace TestPlantilla.Controllers
                     col.edad = model.edad;
                     col.cargo = model.cargo;
                     col.telefono = model.telefono;
-                    col.valorHoraExtra = model.valorHoraExtra;
+                    col.valorHoraExtra =model.valorHoraExtra;
                     db.colaborador.Add(col);
                     db.SaveChanges();
                     result = true;

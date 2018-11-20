@@ -46,9 +46,11 @@
                         <div class="modal-body">
                             <form id="form">
                                 <fieldset id="SubmitForm">
-                                    @Html.HiddenFor(m => m.run, new { @id = "colabRun" })
                                     <div class="form-group">
-                                        @Html.TextBoxFor(m => m.rut, new { @id = "colabRut", @class = "form-control", @placeholder = "Rut*" })
+                                        @Html.TextBoxFor(m => m.run, new { @id = "colabRun", @class = "form-control", @placeholder = "RUN*" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.rut, new { @id = "colabRut", @class = "form-control", @placeholder = "RUT*" })
                                     </div>
                                     <div class="form-group">
                                         @Html.TextBoxFor(m => m.nombre, new { @id = "colabNombre", @class = "form-control", @placeholder = "Nombre*" })
@@ -91,7 +93,7 @@
     function DataBind(colabList) {
         //This Code For Receive All Data From Controller And Show It In Client Side
         var SetData = $("#SetColaboradorList");
-        for (var i = 0; i < 3; i++) {
+        for (var i = 0; i < colabList.length; i++) {
             var Data = "<tr class='row_" + colabList[i].run + "'>" +
                 "<td>" + colabList[i].run + "</td>" +
                 "<td>" + colabList[i].rut + "</td>" +
@@ -115,7 +117,6 @@
 
     function AddNewColaborador(run) {
         $("#form")[0].reset();
-        $("#colabRun").val(0);
         $("#ModalTitle").html("Agregar colaborador");
         $("#MyModal").modal();
 
@@ -132,6 +133,7 @@
             url: url,
             success: function (data) {
                 var obj = JSON.parse(data);
+                $("#colabRun").val(obj.run);
                 $("#colabRut").val(obj.rut);
                 $("#colabNombre").val(obj.nombre);
                 $("#colabApellidoPaterno").val(obj.apellidoPaterno);
@@ -146,10 +148,10 @@
     }
 
     $("#GuardarColaborador").click(function () {
-        var data = $("SubmitForm").serialize();
+        var data = $("#SubmitForm").serialize();
         $.ajax({
             type: "Post",
-            url: "/Home/GuardarColaborador",
+            url: "/Home/GuardarColaboradorInDatabase",
             data: data,
             success: function (result) {
                 alert("¡Completado!");
