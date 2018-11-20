@@ -40,8 +40,8 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <a href="#" class="close" data-dismiss="modal">&times;</a>
                             <h4 id="ModalTitle"></h4>
+                            <a href="#" class="close" data-dismiss="modal">&times;</a>
                         </div>
                         <div class="modal-body">
                             <form id="form">
@@ -116,8 +116,7 @@
     function AddNewColaborador(run) {
         $("#form")[0].reset();
         $("#colabRun").val(0);
-        $("#DropDwn option:selected").text("--Select Dept--");
-        $("#ModalTitle").html("Agregar Colaborador");
+        $("#ModalTitle").html("Agregar colaborador");
         $("#MyModal").modal();
 
     }
@@ -126,7 +125,7 @@
 
     function EditColaborador(run) {
         var url = "/Home/GetColaboradorByRun?run=" + run;
-        $("#ModalTitle").html("Actualizar Datos de Colaboradores");
+        $("#ModalTitle").html("Actualizar datos de colaboradores");
         $("#MyModal").modal();
         $.ajax({
             type: "GET",
@@ -145,6 +144,20 @@
             }
         })
     }
+
+    $("#GuardarColaborador").click(function () {
+        var data = $("SubmitForm").serialize();
+        $.ajax({
+            type: "Post",
+            url: "/Home/GuardarColaborador",
+            data: data,
+            success: function (result) {
+                alert("¡Completado!");
+                window.location.href = "/Home/Colaborador";
+                $("#MyModal").modal("hide");
+            }
+        })
+    })
 </script>
 
 

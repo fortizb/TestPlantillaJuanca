@@ -29,7 +29,7 @@ namespace TestPlantilla.Controllers
 
         public JsonResult GetColaboradorList()
         {
-            List<ColaboradorViewModel> colabList = db.colaborador.Where(x=>x.cargo!=null).Select(x => new ColaboradorViewModel
+            List<ColaboradorViewModel> colabList = db.colaborador.Select(x => new ColaboradorViewModel
             {
                 run = x.run,
                 rut = x.rut,
@@ -52,6 +52,50 @@ namespace TestPlantilla.Controllers
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
             return Json(value, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GuardarColaborador(ColaboradorViewModel model)
+        {
+            var result = false;
+            try
+            {
+                if (model.run > 0)
+                {
+                    colaborador col = db.colaborador.SingleOrDefault(x => x.run == model.run);
+                    col.rut = model.rut;
+                    col.nombre = model.nombre;
+                    col.apellidoPaterno = model.apellidoPaterno;
+                    col.apellidoMaterno = model.apellidoMaterno;
+                    col.edad = model.edad;
+                    col.cargo = model.cargo;
+                    col.telefono = model.telefono;
+                    col.valorHoraExtra = model.valorHoraExtra;
+                    db.SaveChanges();
+                    result = true;
+                }
+                else
+                {
+                    colaborador col = new colaborador();
+                    col.run = model.run;
+                    col.rut = model.rut;
+                    col.nombre = model.nombre;
+                    col.apellidoPaterno = model.apellidoPaterno;
+                    col.apellidoMaterno = model.apellidoMaterno;
+                    col.edad = model.edad;
+                    col.cargo = model.cargo;
+                    col.telefono = model.telefono;
+                    col.valorHoraExtra = model.valorHoraExtra;
+                    db.colaborador.Add(col);
+                    db.SaveChanges();
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
     }
