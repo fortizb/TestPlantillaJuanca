@@ -12,20 +12,12 @@ namespace TestPlantilla.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class auxiliar
+    public partial class sysdiagrams
     {
-        public auxiliar()
-        {
-            this.hojaRutaDetalle = new HashSet<hojaRutaDetalle>();
-        }
-    
-        public int run { get; set; }
-        public string rut { get; set; }
-        public string nombreRazonSocial { get; set; }
-        public string direccion { get; set; }
-        public Nullable<int> telefono { get; set; }
-        public Nullable<bool> activo { get; set; }
-    
-        public virtual ICollection<hojaRutaDetalle> hojaRutaDetalle { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

@@ -16,5 +16,6 @@ namespace TestPlantilla.Models
         public string cargo { get; set; }
         public Nullable<int> telefono { get; set; }
         public Nullable<int> valorHoraExtra { get; set; }
+        public Nullable<bool> activo { get; set; }
     }
 }

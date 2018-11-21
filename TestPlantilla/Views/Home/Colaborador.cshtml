@@ -34,7 +34,7 @@
                 </tbody>
             </table>
 
-            <!--Modal Añadir Colaborador -->
+            @*Modal Añadir Colaborador*@
 
             <div class="modal fadeOut" id="MyModal">
                 <div class="modal-dialog">
@@ -47,7 +47,7 @@
                             <form id="form">
                                 <fieldset id="SubmitForm">
                                     <div class="form-group">
-                                        @Html.TextBoxFor(m => m.run, new { @id = "colabRun", @class = "form-control", @placeholder = "RUN*" })
+                                        @Html.TextBoxFor(m => m.run, new { @id = "colabRun", @class = "form-control",    @placeholder = "RUN*" })
                                     </div>
                                     <div class="form-group">
                                         @Html.TextBoxFor(m => m.rut, new { @id = "colabRut", @class = "form-control", @placeholder = "RUT*" })
@@ -83,6 +83,28 @@
                     </div>
                 </div>
             </div>
+
+            @*Modal Eliminar Colaborador*@
+
+            <div class="modal fadeOut" id="ConfirmarBorrar">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <a href="#" class="close" data-dismiss="modal">&times;</a>
+                            <h4>Borrar registro de colaborador</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h4>¿Estas seguro de borrar el registro de colaborador?</h4>
+
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-primary" data-dismiss="modal">Cancelar</a>
+                            <a href="#" class="btn btn-primary" onclick="ConfirmarBorrar()">Confirmar</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
 
  
@@ -105,7 +127,7 @@
                 "<td>" + colabList[i].telefono + "</td>" +
                 "<td>" + colabList[i].valorHoraExtra + "</td>" +
                 "<td>" + "<a href='#' class='btn btn-warning' onclick='EditColaborador(" + colabList[i].run + ")' ><span class='glyphicon glyphicon-edit'></span></a>" + "</td>" +
-                "<td>" + "<a href='#' class='btn btn-danger' onclick='DeleteStudentRecord(" + colabList[i].run + ")'><span class='glyphicon glyphicon-trash'></span></a>" + "</td>" +
+                "<td>" + "<a href='#' class='btn btn-danger' onclick='BorrarRegistroColaborador(" + colabList[i].run + ")'><span class='glyphicon glyphicon-trash'></span></a>" + "</td>" +
                 "</tr>";
             SetData.append(Data);
             $("#LoadingStatus").html(" ");
@@ -147,6 +169,8 @@
         })
     }
 
+    //  
+
     $("#GuardarColaborador").click(function () {
         var data = $("#SubmitForm").serialize();
         $.ajax({
@@ -160,6 +184,27 @@
             }
         })
     })
+
+    function BorrarRegistroColaborador(run) {
+        $("#colabRun").val(run);
+        $("#ConfirmarBorrar").modal("show");
+
+    }
+    function ConfirmarBorrar() {
+        var colabRun = $("#colabRun").val();
+        $.ajax({
+            type: "POST",
+            url: "Home/BorrarRegistroColaborador?run=" + colabRun,
+            success: function (result) {
+                $("#DeleteConfirmation").modal("hide");
+                $(".row_" + colabRun).remove();
+
+            }
+        })
+    }
+
+
+
 </script>
 
 

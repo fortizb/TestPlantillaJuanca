@@ -37,5 +37,6 @@ namespace TestPlantilla.Models
         public DbSet<hojaRutaDetalle> hojaRutaDetalle { get; set; }
         public DbSet<hojaRutaDetalleGuia> hojaRutaDetalleGuia { get; set; }
         public DbSet<vehiculo> vehiculo { get; set; }
+        public DbSet<sysdiagrams> sysdiagrams { get; set; }
     }
 }

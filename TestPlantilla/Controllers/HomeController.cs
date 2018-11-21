@@ -20,7 +20,7 @@ namespace TestPlantilla.Controllers
         {
             ViewBag.Title = "Colaboradores";
             return View();
-        }       
+        }
 
         public ActionResult HojaRuta()
         {
@@ -29,7 +29,7 @@ namespace TestPlantilla.Controllers
 
         public JsonResult GetColaboradorList()
         {
-            List<ColaboradorViewModel> colabList = db.colaborador.Select(x => new ColaboradorViewModel
+            List<ColaboradorViewModel> colabList = db.colaborador.Where(x => x.activo == true).Select(x => new ColaboradorViewModel
             {
                 run = x.run,
                 rut = x.rut,
@@ -64,8 +64,8 @@ namespace TestPlantilla.Controllers
                 if (colab != null)
                 {
                     colaborador col = db.colaborador.SingleOrDefault(s => s.run == model.run);
-                    col.rut = model.rut;
-                    col.nombre = model.nombre;
+
+
                     col.apellidoPaterno = model.apellidoPaterno;
                     col.apellidoMaterno = model.apellidoMaterno;
                     col.edad = model.edad;
@@ -86,7 +86,7 @@ namespace TestPlantilla.Controllers
                     col.edad = model.edad;
                     col.cargo = model.cargo;
                     col.telefono = model.telefono;
-                    col.valorHoraExtra =model.valorHoraExtra;
+                    col.valorHoraExtra = model.valorHoraExtra;
                     db.colaborador.Add(col);
                     db.SaveChanges();
                     result = true;
@@ -100,5 +100,18 @@ namespace TestPlantilla.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult BorrarRegistroColaborador(int run)
+        {
+            bool result = false;
+            colaborador colab = db.colaborador.SingleOrDefault(x => x.activo == true && x.run == run);
+            if (colab != null)
+            {
+                colab.activo = false;
+                db.SaveChanges();
+                result = true;
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
     }
 }

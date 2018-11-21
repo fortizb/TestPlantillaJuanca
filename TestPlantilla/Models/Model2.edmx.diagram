@@ -28,6 +28,7 @@
         <AssociationConnector Association="dimacodevModel1.FK__hojaRuta__idVehi__5070F446" ManuallyRouted="false" />
         <AssociationConnector Association="dimacodevModel1.FK__hojaRutaD__idHoj__52593CB8" ManuallyRouted="false" />
         <AssociationConnector Association="dimacodevModel1.FK__hojaRutaD__idHoj__5441852A" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="dimacodevModel1.sysdiagrams" Width="1.5" PointX="10.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
