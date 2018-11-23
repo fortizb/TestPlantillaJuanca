@@ -22,6 +22,12 @@ namespace TestPlantilla.Controllers
             return View();
         }
 
+        public ActionResult Vehiculos()
+        {
+            ViewBag.Title = "Vehiculos";
+            return View();
+        }
+
         public ActionResult HojaRuta()
         {
             return View();
@@ -72,6 +78,7 @@ namespace TestPlantilla.Controllers
                     col.cargo = model.cargo;
                     col.telefono = model.telefono;
                     col.valorHoraExtra = model.valorHoraExtra;
+                    col.activo = true;
                     db.SaveChanges();
                     result = true;
                 }
@@ -86,6 +93,7 @@ namespace TestPlantilla.Controllers
                     col.edad = model.edad;
                     col.cargo = model.cargo;
                     col.telefono = model.telefono;
+                    col.activo = true;
                     col.valorHoraExtra = model.valorHoraExtra;
                     db.colaborador.Add(col);
                     db.SaveChanges();
@@ -113,5 +121,97 @@ namespace TestPlantilla.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
+
+        //hola que hace
+        public JsonResult GetVehiculoList()
+        {
+            List<VehiculoViewModel> vehiculoList = db.vehiculo.Where(x => x.activo == true).Select(x => new VehiculoViewModel
+            {
+                patente = x.patente,
+                marca = x.marca,
+                modelo = x.modelo,
+                color = x.color,
+                velocidadPromedio = x.velocidadPromedio,
+                rendimiento = x.rendimiento,
+                capacidadCarga = x.capacidadCarga,
+                descripcion = x.descripcion,
+ 
+            }).ToList();
+            return Json(vehiculoList, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetVehiculoByPatente(string patente)
+        {
+            vehiculo model = db.vehiculo.Where(x => x.patente == patente).SingleOrDefault();
+            string value = string.Empty;
+            value = JsonConvert.SerializeObject(model, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            return Json(value, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GuardarVehiculoInDatabase(VehiculoViewModel model)
+        {
+            var result = false;
+            try
+            {
+                vehiculo ve = db.vehiculo.Where(x => x.patente == model.patente).SingleOrDefault();
+                string value = string.Empty;
+                if (ve != null)
+                {
+                    vehiculo veh = db.vehiculo.SingleOrDefault(s => s.patente == model.patente);
+
+                    veh.patente = model.patente;
+                    veh.marca = model.marca;
+                    veh.modelo = model.modelo;
+                    veh.color = model.color;
+                    veh.velocidadPromedio = model.velocidadPromedio;
+                    veh.rendimiento = model.rendimiento;
+                    veh.capacidadCarga = model.capacidadCarga;
+                    veh.descripcion = model.descripcion;
+                    veh.activo = true;
+                    db.SaveChanges();
+                    result = true;
+                }
+                else
+                {
+                    vehiculo veh = new vehiculo();
+                    veh.patente = model.patente;
+                    veh.marca = model.marca;
+                    veh.modelo = model.modelo;
+                    veh.color = model.color;
+                    veh.velocidadPromedio = model.velocidadPromedio;
+                    veh.rendimiento = model.rendimiento;
+                    veh.capacidadCarga = model.capacidadCarga;
+                    veh.descripcion = model.descripcion;
+                    veh.activo = true;
+                    db.vehiculo.Add(veh);
+                    db.SaveChanges();
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult BorrarRegistroVehiculo(string patente)
+        {
+            bool result = false;
+            vehiculo veh = db.vehiculo.SingleOrDefault(x => x.activo == true && x.patente == patente);
+            if (veh != null)
+            {
+                veh.activo = false;
+                db.SaveChanges();
+                result = true;
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
+
+
     }
 }

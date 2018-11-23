@@ -25,6 +25,11 @@ namespace TestPlantilla
                url: "Colaborador",
                defaults: new { controller = "Home", action = "Colaborador" }
            );
+            routes.MapRoute(
+              name: "Vehiculos",
+              url: "Vehiculos",
+              defaults: new { controller = "Home", action = "Vehiculos" }
+          );
 
             routes.MapRoute(
                 name: "Default",

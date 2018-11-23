@@ -1,0 +1,204 @@
+﻿@model TestPlantilla.Models.VehiculoViewModel
+@{
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <link href="~/Content/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" />
+    <div class="container">
+
+        <div class="row">
+            <div class="col">
+                <h3 class="title-5 m-b-35" style="margin-top: 1em;">Gestión de Vehiculos</h3>
+            </div>
+        </div>
+
+        <a href="#" class="btn btn-info" onclick="AddNewVehiculo(0)">Añadir Vehiculo</a> <br /><br />
+
+        <table class="table table-bordered table-striped tablecontainer" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>Patente</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Color</th>
+                    <th>Velocidad Promedio</th>
+                    <th>Rendimiento</th>
+                    <th>Capacidad de Carga</th>
+                    <th>Descripción</th>
+                    <th>Action(Edit)</th>
+                    <th>Action(Delete)</th>
+                </tr>
+            </thead>
+            <tbody id="SetVehiculoList">
+                <tr id="LoadingStatus" style="color:red"></tr>
+            </tbody>
+        </table>
+
+        @*Modal Añadir Vehiculo*@
+
+        <div class="modal fadeOut" id="MyModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 id="ModalTitle"></h4>
+                        <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form">
+                            <fieldset id="SubmitForm">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.patente, new { @id = "vehPatente", @class = "form-control", @placeholder = "Patente" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.marca, new { @id = "vehMarca", @class = "form-control", @placeholder = "Marca*" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.modelo, new { @id = "vehModelo", @class = "form-control", @placeholder = "Modelo*" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.color, new { @id = "vehColor", @class = "form-control", @placeholder = "Color*" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.velocidadPromedio, new { @id = "vehVelocidadPromedio", @class = "form-control", @placeholder = "Velocidad Promedio*" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.rendimiento, new { @id = "vehRendimiento", @class = "form-control", @placeholder = "Rendimiento*" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.capacidadCarga, new { @id = "vehCapacidadCarga", @class = "form-control", @placeholder = "Capacidad de Carga*" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.descripcion, new { @id = "vehDescripcion", @class = "form-control", @placeholder = "Descripcion*" })
+                                </div>                              
+                                <div class="form-group">
+                                    <a href="#" class="btn btn-block btn-danger" id="GuardarVehiculo">Guardar</a>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*Modal Eliminar Colaborador*@
+
+        <div class="modal fadeOut" id="ConfirmarBorrar">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="close" data-dismiss="modal">&times;</a>
+                        <h4>Borrar registro de colaborador</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>¿Estas seguro de borrar el registro de colaborador?</h4>
+
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-primary" data-dismiss="modal">Cancelar</a>
+                        <a href="#" class="btn btn-primary" onclick="ConfirmarBorrar()">Confirmar</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+<script>
+    $("#LoadingStatus").html("Loading...");
+    $.get("/Home/GetVehiculoList", null, DataBind);
+    function DataBind(vehiculoList) {
+        //This Code For Receive All Data From Controller And Show It In Client Side
+        var SetData = $("#SetVehiculoList");
+        for (var i = 0; i < vehiculoList.length; i++) {
+            var Data = "<tr class='row_" + vehiculoList[i].patente + "'>" +
+                "<td>" + vehiculoList[i].patente + "</td>" +
+                "<td>" + vehiculoList[i].marca+ "</td>" +
+                "<td>" + vehiculoList[i].molo + "</td>" +
+                "<td>" + vehiculoList[i].color + "</td>" +
+                "<td>" + vehiculoList[i].velocidadPromedio + "</td>" +
+                "<td>" + vehiculoList[i].rendimiento + "</td>" +
+                "<td>" + vehiculoList[i].capacidadCarga + "</td>" +
+                "<td>" + vehiculoList[i].descripcion + "</td>" +
+                "<td>" + "<a href='#' class='btn btn-warning' onclick='EditVehiculo(" + vehiculoList[i].patente + ")' ><span class='glyphicon glyphicon-edit'></span></a>" + "</td>" +
+                "<td>" + "<a href='#' class='btn btn-danger' onclick='BorrarRegistroVehiculo(" + vehiculoList[i].patente + ")'><span class='glyphicon glyphicon-trash'></span></a>" + "</td>" +
+                "</tr>";
+            SetData.append(Data);
+            $("#LoadingStatus").html(" ");
+
+        }
+    }
+
+    // Modal Agregar Colaborador
+
+    function AddNewVehiculo(patente) {
+        $("#form")[0].reset();
+        $("#ModalTitle").html("Agregar vehiculo");
+        $("#MyModal").modal();
+
+    }
+
+    //Show The Popup Modal For Edit Student Record
+
+    function EditVehiculo(patente) {
+        var url = "/Home/GetVehiculoByPatente?patente=" + patente;
+        $("#ModalTitle").html("Actualizar datos del vehiculo");
+        $("#MyModal").modal();
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                $("#vehPatente").val(obj.patente);
+                $("#vehMarca").val(obj.marca);
+                $("#vehModelo").val(obj.modelo);
+                $("#vehColor").val(obj.color);
+                $("#vehVelocidadPromedio").val(obj.velocidadPromedio);
+                $("#vehRendimiento").val(obj.rendimiento);
+                $("#vehCapacidadCarga").val(obj.capacidadCarga);
+                $("#vehDescripcion").val(obj.descripcion);
+            }
+        })
+    }
+
+    //
+
+    $("#GuardarVehiculo").click(function () {
+        var data = $("#SubmitForm").serialize();
+        $.ajax({
+            type: "Post",
+            url: "/Home/GuardarVehiculoInDatabase",
+            data: data,
+            success: function (result) {
+                alert("¡Completado!");
+                window.location.href = "/Vehiculos";
+                $("#MyModal").modal("hide");
+            }
+        })
+    })
+
+    function BorrarRegistroVehiculo(patente) {
+        $("#vehPatente").val(patente);
+        $("#ConfirmarBorrar").modal("show");
+
+    }
+    function ConfirmarBorrar() {
+        var vehPatente = $("#vehPatente").val();
+        $.ajax({
+            type: "POST",
+            url: "Home/BorrarRegistroVehiculo?patente=" + vehPatente,
+            success: function (result) {
+                alert("¡Vehiculo Eliminado!");
+                window.location.href = "/Vehiculos";
+                $("#ConfirmarBorrar").modal("hide");
+                $(".row_" + vehPatente).remove();
+
+            }
+        })
+    }
+
+
+
+</script>
+
+
