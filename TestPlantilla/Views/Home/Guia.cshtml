@@ -19,9 +19,11 @@
                     <th>N°</th>
                     <th>Nombre</th>
                     <th>Rut</th>
+                    <th>Ciudad</th>
                     <th>Direccion</th>
                     <th>Telefono</th>
                     <th>Fecha Ingreso</th>
+                    <th>Observaciones</th>
                     <th>EDITAR</th>
                     <th>BORRAR</th>
                 </tr>
@@ -43,7 +45,9 @@
                     <div class="modal-body">
                         <form id="form">
                             <fieldset id="SubmitForm">
-                                @Html.HiddenFor(m => m.numeroGuia, new { @id = "guiaNumeroGuia" })
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.numeroGuia, new { @id = "guiaNumeroGuia", @class = "form-control", @placeholder = "Numero Guia*" })
+                                </div>
                                 <div class="form-group">
                                     @Html.TextBoxFor(m => m.nombreRazonSocial, new { @id = "guiaNombreRazonSocial", @class = "form-control", @placeholder = "Nombre*" })
                                 </div>
@@ -51,15 +55,18 @@
                                     @Html.TextBoxFor(m => m.rut, new { @id = "guiaRut", @class = "form-control", @placeholder = "RUT*" })
                                 </div>
                                 <div class="form-group">
-                                    @Html.TextBoxFor(m => m.direccion, new { @id = "guiaDireccion", @class = "form-control", @placeholder = "Nombre*" })
+                                    @Html.TextBoxFor(m => m.ciudad, new { @id = "guiaCiudad", @class = "form-control", @placeholder = "Ciudad*" })
                                 </div>
                                 <div class="form-group">
-                                    @Html.TextBoxFor(m => m.telefono, new { @id = "guiaTelefono", @class = "form-control", @placeholder = "Nombre*" })
+                                    @Html.TextBoxFor(m => m.direccion, new { @id = "guiaDireccion", @class = "form-control", @placeholder = "Direccion*" })
                                 </div>
                                 <div class="form-group">
-                                    @Html.TextBoxFor(m => m.fechaIngreso, new { @id = "guiaFechaIngreso", @class = "form-control", @placeholder = "Nombre*" })
+                                    @Html.TextBoxFor(m => m.telefono, new { @id = "guiaTelefono", @class = "form-control", @placeholder = "Telefono*" })
                                 </div>
-
+                                @Html.HiddenFor(m => m.fechaIngreso, new { @id = "guiaFechaIngreso" })
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.observacion, new { @id = "guiaObservacion", @class = "form-control", @placeholder = "Comentarios*" })
+                                </div>
                                 <div class="form-group">
                                     <a href="#" class="btn btn-block btn-danger" id="GuardarGuia">Guardar</a>
                                 </div>
@@ -106,9 +113,11 @@
                 "<td>" + guiaList[i].numeroGuia + "</td>" +
                 "<td>" + guiaList[i].nombreRazonSocial + "</td>" +
                 "<td>" + guiaList[i].rut + "</td>" +
+                "<td>" + guiaList[i].ciudad + "</td>" +
                 "<td>" + guiaList[i].direccion + "</td>" +
                 "<td>" + guiaList[i].telefono + "</td>" +
                 "<td>" + guiaList[i].fechaIngreso + "</td>" +
+                "<td>" + guiaList[i].observacion + "</td>" +
                 "<td>" + "<a href='#' class='btn btn-warning' onclick='EditColaborador(" + guiaList[i].numeroGuia + ")' ><span class='glyphicon glyphicon-edit'></span></a>" + "</td>" +
                 "<td>" + "<a href='#' class='btn btn-danger' onclick='BorrarRegistroColaborador(" + guiaList[i].numeroGuia + ")'><span class='glyphicon glyphicon-trash'></span></a>" + "</td>" +
                 "</tr>";
@@ -139,11 +148,12 @@
             success: function (data) {
                 var obj = JSON.parse(data);
                 $("#guiaNumeroGuia").val(obj.numeroGuia);
-                $("#guiaRut").val(obj.rut);
                 $("#guiaNombreRazonSocial").val(obj.nombreRazonSocial);
+                $("#guiaRut").val(obj.rut);
+                $("#guiaCiudad").val(obj.ciudad);
                 $("#guiaDireccion").val(obj.direccion);
                 $("#guiaTelefono").val(obj.telefono);
-                $("#guiaFechaIngreso").val(obj.fechaIngreso);          
+                $("#guiaObservacion").val(obj.observacion);
             }
         })
     }

@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using TestPlantilla.Models;
 
+
 namespace TestPlantilla.Controllers
 {
     public class HomeController : Controller
@@ -224,14 +225,13 @@ namespace TestPlantilla.Controllers
             List<GuiasViewModel> guiaList = db.guias.Where(x => x.estado == true).Select(x => new GuiasViewModel
             {
                 numeroGuia = x.numeroGuia,
-                rut = x.rut,
                 nombreRazonSocial = x.nombreRazonSocial,
+                rut = x.rut,
+                ciudad = x.ciudad,
                 direccion = x.direccion,
                 telefono = x.telefono,
                 fechaIngreso = x.fechaIngreso,
-
-                
-
+                observacion = x.observacion
             }).ToList();
             return Json(guiaList, JsonRequestBehavior.AllowGet);
         }
@@ -260,9 +260,14 @@ namespace TestPlantilla.Controllers
                     gui.numeroGuia = model.numeroGuia;
                     gui.rut = model.rut;
                     gui.nombreRazonSocial = model.nombreRazonSocial;
+                    gui.ciudad = model.ciudad;
                     gui.direccion = model.direccion;
                     gui.telefono = model.telefono;
-                    gui.fechaIngreso = model.fechaIngreso;
+                    if(model.observacion == null)
+                    {
+                        model.observacion = "Sin Comentarios";
+                    }
+                    gui.observacion = model.observacion;
                     gui.estado = true;
                     db.SaveChanges();
                     result = true;
@@ -273,9 +278,15 @@ namespace TestPlantilla.Controllers
                     gui.numeroGuia = model.numeroGuia;
                     gui.rut = model.rut;
                     gui.nombreRazonSocial = model.nombreRazonSocial;
+                    gui.ciudad = model.ciudad;
                     gui.direccion = model.direccion;
                     gui.telefono = model.telefono;
-                    gui.fechaIngreso = model.fechaIngreso;
+                    gui.fechaIngreso = DateTime.Now;
+                    if (model.observacion == null)
+                    {
+                        model.observacion = "Sin Comentarios";
+                    }
+                    gui.observacion = model.observacion;
                     gui.estado = true;
                     db.guias.Add(gui);
                     db.SaveChanges();

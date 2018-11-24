@@ -75,7 +75,9 @@
           <Property Name="nombreRazonSocial" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="fechaIngreso" Type="datetime" />
           <Property Name="direccion" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ciudad" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="telefono" Type="int" />
+          <Property Name="observacion" Type="nvarchar" MaxLength="250" />
           <Property Name="estado" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="hojaRuta">
@@ -391,6 +393,8 @@
           <Property Name="nombreRazonSocial" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="telefono" Type="Int32" />
           <Property Name="estado" Type="Boolean" Nullable="false" />
+          <Property Name="ciudad" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="observacion" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="hojaRuta">
           <Key>
@@ -709,6 +713,8 @@
           <EntitySetMapping Name="guias">
             <EntityTypeMapping TypeName="dimacodevModel1.guias">
               <MappingFragment StoreEntitySet="guias">
+                <ScalarProperty Name="observacion" ColumnName="observacion" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
                 <ScalarProperty Name="estado" ColumnName="estado" />
                 <ScalarProperty Name="telefono" ColumnName="telefono" />
                 <ScalarProperty Name="nombreRazonSocial" ColumnName="nombreRazonSocial" />

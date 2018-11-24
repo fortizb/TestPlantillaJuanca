@@ -26,6 +26,8 @@ namespace TestPlantilla.Models
         public string nombreRazonSocial { get; set; }
         public Nullable<int> telefono { get; set; }
         public bool estado { get; set; }
+        public string ciudad { get; set; }
+        public string observacion { get; set; }
     
         public virtual ICollection<hojaRutaDetalleGuia> hojaRutaDetalleGuia { get; set; }
     }
