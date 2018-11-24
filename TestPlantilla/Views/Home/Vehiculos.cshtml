@@ -81,20 +81,20 @@
 
         @*Modal Eliminar Colaborador*@
 
-        <div class="modal fadeOut" id="ConfirmarBorrar">
+        <div class="modal fadeOut" id="ConfirmarBorrarVehiculo">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <a href="#" class="close" data-dismiss="modal">&times;</a>
-                        <h4>Borrar registro de colaborador</h4>
+                        <h4>Borrar registro de Vehiculo</h4>
                     </div>
                     <div class="modal-body">
-                        <h4>¿Estas seguro de borrar el registro de colaborador?</h4>
+                        <h4>¿Estas seguro de borrar el registro de Vehiculo?</h4>
 
                     </div>
                     <div class="modal-footer">
                         <a href="#" class="btn btn-primary" data-dismiss="modal">Cancelar</a>
-                        <a href="#" class="btn btn-primary" onclick="ConfirmarBorrar()">Confirmar</a>
+                        <a href="#" class="btn btn-primary" onclick="ConfirmarBorrarVehiculo()">Confirmar</a>
                     </div>
 
                 </div>
@@ -161,7 +161,7 @@
         })
     }
 
-    //
+    //Guardar Vehiculo
 
     $("#GuardarVehiculo").click(function () {
         var data = $("#SubmitForm").serialize();
@@ -171,7 +171,7 @@
             data: data,
             success: function (result) {
                 alert("¡Completado!");
-                window.location.href = "/Vehiculos";
+                window.location.href = "/Home/Vehiculos";
                 $("#MyModal").modal("hide");
             }
         })
@@ -182,7 +182,7 @@
         $("#ConfirmarBorrar").modal("show");
 
     }
-    function ConfirmarBorrar() {
+    function ConfirmarBorrarVehiculo() {
         var vehPatente = $("#vehPatente").val();
         $.ajax({
             type: "POST",
@@ -190,7 +190,7 @@
             success: function (result) {
                 alert("¡Vehiculo Eliminado!");
                 window.location.href = "/Vehiculos";
-                $("#ConfirmarBorrar").modal("hide");
+                $("#ConfirmarBorrarVehiculo").modal("hide");
                 $(".row_" + vehPatente).remove();
 
             }

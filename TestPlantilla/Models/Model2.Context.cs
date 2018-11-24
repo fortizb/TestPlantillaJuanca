@@ -25,7 +25,6 @@ namespace TestPlantilla.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<auxiliar> auxiliar { get; set; }
         public DbSet<colaborador> colaborador { get; set; }
         public DbSet<colaboradorHojaRuta> colaboradorHojaRuta { get; set; }
         public DbSet<costosHojaRuta> costosHojaRuta { get; set; }

@@ -157,9 +157,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\auxiliar.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\colaborador.cs">
       <DependentUpon>Model2.tt</DependentUpon>
     </Compile>
@@ -185,6 +182,7 @@
     <Compile Include="Models\guias.cs">
       <DependentUpon>Model2.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GuiasViewModel.cs" />
     <Compile Include="Models\hojaRuta.cs">
       <DependentUpon>Model2.tt</DependentUpon>
     </Compile>
@@ -415,6 +413,7 @@
     <Content Include="Views\Home\Colaborador.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Vehiculos.cshtml" />
+    <Content Include="Views\Home\Guia.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

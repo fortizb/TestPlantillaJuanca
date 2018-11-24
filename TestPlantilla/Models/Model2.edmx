@@ -5,17 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="dimacodevModel1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="auxiliar">
-          <Key>
-            <PropertyRef Name="run" />
-          </Key>
-          <Property Name="run" Type="int" Nullable="false" />
-          <Property Name="rut" Type="varchar" MaxLength="12" Nullable="false" />
-          <Property Name="nombreRazonSocial" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="direccion" Type="nvarchar" MaxLength="100" />
-          <Property Name="telefono" Type="int" />
-          <Property Name="activo" Type="bit" />
-        </EntityType>
         <EntityType Name="colaborador">
           <Key>
             <PropertyRef Name="run" />
@@ -82,8 +71,12 @@
             <PropertyRef Name="numeroGuia" />
           </Key>
           <Property Name="numeroGuia" Type="int" Nullable="false" />
+          <Property Name="rut" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="nombreRazonSocial" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="fechaIngreso" Type="datetime" />
           <Property Name="direccion" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="telefono" Type="int" />
+          <Property Name="estado" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="hojaRuta">
           <Key>
@@ -102,7 +95,6 @@
           </Key>
           <Property Name="idHojaRutaDetalle" Type="int" Nullable="false" />
           <Property Name="idHojaRuta" Type="int" Nullable="false" />
-          <Property Name="idCliente" Type="int" Nullable="false" />
           <Property Name="numeroGuia" Type="int" Nullable="false" />
           <Property Name="fechaSalida" Type="datetime" />
           <Property Name="fechaLlegada" Type="datetime" />
@@ -213,18 +205,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__hojaRutaD__idCli__5165187F">
-          <End Role="auxiliar" Type="Self.auxiliar" Multiplicity="1" />
-          <End Role="hojaRutaDetalle" Type="Self.hojaRutaDetalle" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="auxiliar">
-              <PropertyRef Name="run" />
-            </Principal>
-            <Dependent Role="hojaRutaDetalle">
-              <PropertyRef Name="idCliente" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__hojaRutaD__idEst__534D60F1">
           <End Role="estadoEntrega" Type="Self.estadoEntrega" Multiplicity="1" />
           <End Role="hojaRutaDetalleGuia" Type="Self.hojaRutaDetalleGuia" Multiplicity="*" />
@@ -261,7 +241,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__hojaRutaD__numer__5535A963">
+        <Association Name="FK_hojaRutaDetalleGuia_guias">
           <End Role="guias" Type="Self.guias" Multiplicity="1" />
           <End Role="hojaRutaDetalleGuia" Type="Self.hojaRutaDetalleGuia" Multiplicity="*" />
           <ReferentialConstraint>
@@ -274,7 +254,6 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="dimacodevModel1StoreContainer">
-          <EntitySet Name="auxiliar" EntityType="Self.auxiliar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="colaborador" EntityType="Self.colaborador" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="colaboradorHojaRuta" EntityType="Self.colaboradorHojaRuta" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="costosHojaRuta" EntityType="Self.costosHojaRuta" Schema="dbo" store:Type="Tables" />
@@ -311,10 +290,6 @@
             <End Role="vehiculo" EntitySet="vehiculo" />
             <End Role="hojaRuta" EntitySet="hojaRuta" />
           </AssociationSet>
-          <AssociationSet Name="FK__hojaRutaD__idCli__5165187F" Association="Self.FK__hojaRutaD__idCli__5165187F">
-            <End Role="auxiliar" EntitySet="auxiliar" />
-            <End Role="hojaRutaDetalle" EntitySet="hojaRutaDetalle" />
-          </AssociationSet>
           <AssociationSet Name="FK__hojaRutaD__idEst__534D60F1" Association="Self.FK__hojaRutaD__idEst__534D60F1">
             <End Role="estadoEntrega" EntitySet="estadoEntrega" />
             <End Role="hojaRutaDetalleGuia" EntitySet="hojaRutaDetalleGuia" />
@@ -327,7 +302,7 @@
             <End Role="hojaRutaDetalle" EntitySet="hojaRutaDetalle" />
             <End Role="hojaRutaDetalleGuia" EntitySet="hojaRutaDetalleGuia" />
           </AssociationSet>
-          <AssociationSet Name="FK__hojaRutaD__numer__5535A963" Association="Self.FK__hojaRutaD__numer__5535A963">
+          <AssociationSet Name="FK_hojaRutaDetalleGuia_guias" Association="Self.FK_hojaRutaDetalleGuia_guias">
             <End Role="guias" EntitySet="guias" />
             <End Role="hojaRutaDetalleGuia" EntitySet="hojaRutaDetalleGuia" />
           </AssociationSet>
@@ -336,18 +311,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="dimacodevModel1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="auxiliar">
-          <Key>
-            <PropertyRef Name="run" />
-          </Key>
-          <Property Name="run" Type="Int32" Nullable="false" />
-          <Property Name="rut" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="nombreRazonSocial" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="telefono" Type="Int32" />
-          <NavigationProperty Name="hojaRutaDetalle" Relationship="Self.FK__hojaRutaD__idCli__5165187F" FromRole="auxiliar" ToRole="hojaRutaDetalle" />
-          <Property Name="activo" Type="Boolean" />
-        </EntityType>
         <EntityType Name="colaborador">
           <Key>
             <PropertyRef Name="run" />
@@ -424,6 +387,10 @@
           <Property Name="fechaIngreso" Type="DateTime" Precision="3" />
           <Property Name="direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="hojaRutaDetalleGuia" Relationship="Self.FK__hojaRutaD__numer__5535A963" FromRole="guias" ToRole="hojaRutaDetalleGuia" />
+          <Property Name="rut" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="nombreRazonSocial" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="telefono" Type="Int32" />
+          <Property Name="estado" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="hojaRuta">
           <Key>
@@ -448,11 +415,9 @@
           </Key>
           <Property Name="idHojaRutaDetalle" Type="Int32" Nullable="false" />
           <Property Name="idHojaRuta" Type="Int32" Nullable="false" />
-          <Property Name="idCliente" Type="Int32" Nullable="false" />
           <Property Name="numeroGuia" Type="Int32" Nullable="false" />
           <Property Name="fechaSalida" Type="DateTime" Precision="3" />
           <Property Name="fechaLlegada" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="auxiliar" Relationship="Self.FK__hojaRutaD__idCli__5165187F" FromRole="hojaRutaDetalle" ToRole="auxiliar" />
           <NavigationProperty Name="hojaRuta" Relationship="Self.FK__hojaRutaD__idHoj__52593CB8" FromRole="hojaRutaDetalle" ToRole="hojaRuta" />
           <NavigationProperty Name="hojaRutaDetalleGuia" Relationship="Self.FK__hojaRutaD__idHoj__5441852A" FromRole="hojaRutaDetalle" ToRole="hojaRutaDetalleGuia" />
         </EntityType>
@@ -484,18 +449,6 @@
           <NavigationProperty Name="hojaRuta" Relationship="Self.FK__hojaRuta__idVehi__5070F446" FromRole="vehiculo" ToRole="hojaRuta" />
           <Property Name="activo" Type="Boolean" />
         </EntityType>
-        <Association Name="FK__hojaRutaD__idCli__5165187F">
-          <End Role="auxiliar" Type="Self.auxiliar" Multiplicity="1" />
-          <End Role="hojaRutaDetalle" Type="Self.hojaRutaDetalle" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="auxiliar">
-              <PropertyRef Name="run" />
-            </Principal>
-            <Dependent Role="hojaRutaDetalle">
-              <PropertyRef Name="idCliente" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__colaborador__run__4CA06362">
           <End Role="colaborador" Type="Self.colaborador" Multiplicity="1" />
           <End Role="colaboradorHojaRuta" Type="Self.colaboradorHojaRuta" Multiplicity="*" />
@@ -617,7 +570,6 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="dimacodevEntities1" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="auxiliar" EntityType="Self.auxiliar" />
           <EntitySet Name="colaborador" EntityType="Self.colaborador" />
           <EntitySet Name="colaboradorHojaRuta" EntityType="Self.colaboradorHojaRuta" />
           <EntitySet Name="costosHojaRuta" EntityType="Self.costosHojaRuta" />
@@ -629,10 +581,6 @@
           <EntitySet Name="hojaRutaDetalle" EntityType="Self.hojaRutaDetalle" />
           <EntitySet Name="hojaRutaDetalleGuia" EntityType="Self.hojaRutaDetalleGuia" />
           <EntitySet Name="vehiculo" EntityType="Self.vehiculo" />
-          <AssociationSet Name="FK__hojaRutaD__idCli__5165187F" Association="Self.FK__hojaRutaD__idCli__5165187F">
-            <End Role="auxiliar" EntitySet="auxiliar" />
-            <End Role="hojaRutaDetalle" EntitySet="hojaRutaDetalle" />
-          </AssociationSet>
           <AssociationSet Name="FK__colaborador__run__4CA06362" Association="Self.FK__colaborador__run__4CA06362">
             <End Role="colaborador" EntitySet="colaborador" />
             <End Role="colaboradorHojaRuta" EntitySet="colaboradorHojaRuta" />
@@ -691,18 +639,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="dimacodevModel1StoreContainer" CdmEntityContainer="dimacodevEntities1">
-          <EntitySetMapping Name="auxiliar">
-            <EntityTypeMapping TypeName="dimacodevModel1.auxiliar">
-              <MappingFragment StoreEntitySet="auxiliar">
-                <ScalarProperty Name="activo" ColumnName="activo" />
-                <ScalarProperty Name="run" ColumnName="run" />
-                <ScalarProperty Name="rut" ColumnName="rut" />
-                <ScalarProperty Name="nombreRazonSocial" ColumnName="nombreRazonSocial" />
-                <ScalarProperty Name="direccion" ColumnName="direccion" />
-                <ScalarProperty Name="telefono" ColumnName="telefono" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="colaborador">
             <EntityTypeMapping TypeName="dimacodevModel1.colaborador">
               <MappingFragment StoreEntitySet="colaborador">
@@ -773,6 +709,10 @@
           <EntitySetMapping Name="guias">
             <EntityTypeMapping TypeName="dimacodevModel1.guias">
               <MappingFragment StoreEntitySet="guias">
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="nombreRazonSocial" ColumnName="nombreRazonSocial" />
+                <ScalarProperty Name="rut" ColumnName="rut" />
                 <ScalarProperty Name="numeroGuia" ColumnName="numeroGuia" />
                 <ScalarProperty Name="fechaIngreso" ColumnName="fechaIngreso" />
                 <ScalarProperty Name="direccion" ColumnName="direccion" />
@@ -796,7 +736,6 @@
               <MappingFragment StoreEntitySet="hojaRutaDetalle">
                 <ScalarProperty Name="idHojaRutaDetalle" ColumnName="idHojaRutaDetalle" />
                 <ScalarProperty Name="idHojaRuta" ColumnName="idHojaRuta" />
-                <ScalarProperty Name="idCliente" ColumnName="idCliente" />
                 <ScalarProperty Name="numeroGuia" ColumnName="numeroGuia" />
                 <ScalarProperty Name="fechaSalida" ColumnName="fechaSalida" />
                 <ScalarProperty Name="fechaLlegada" ColumnName="fechaLlegada" />

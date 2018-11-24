@@ -1,0 +1,182 @@
+﻿@model TestPlantilla.Models.GuiasViewModel
+@{
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <link href="~/Content/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" />
+    <div class="container">
+
+        <div class="row">
+            <div class="col">
+                <h3 class="title-5 m-b-35" style="margin-top: 1em;">Gestión de colaboradores</h3>
+            </div>
+        </div>
+
+        <a href="#" class="btn btn-info" onclick="AddNewGuia(0)">Añadir Guia</a> <br /><br />
+
+        <table class="table table-bordered table-striped tablecontainer" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>fechaIngreso</th>
+                    <th>Dirección</th>
+                    <th>Action(Edit)</th>
+                    <th>Action(Delete)</th>
+                </tr>
+            </thead>
+            <tbody id="SetGuiaList">
+                <tr id="LoadingStatus" style="color:red"></tr>
+            </tbody>
+        </table>
+
+        @*Modal Añadir Guia*@
+
+        <div class="modal fadeOut" id="MyModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 id="ModalTitle"></h4>
+                        <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form">
+                            <fieldset id="SubmitForm">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.numeroGuia, new { @id = "guiaNumeroGuia", @class = "form-control", @placeholder = "RUN*" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.rut, new { @id = "guiaRut", @class = "form-control", @placeholder = "RUT*" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.nombreRazonSocial, new { @id = "guiaNombreRazonSocial", @class = "form-control", @placeholder = "Nombre*" })
+                                </div>
+                                
+
+                                <div class="form-group">
+                                    <a href="#" class="btn btn-block btn-danger" id="GuardarGuia">Guardar</a>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*Modal Eliminar Colaborador*@
+
+        <div class="modal fadeOut" id="ConfirmarBorrar">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="close" data-dismiss="modal">&times;</a>
+                        <h4>Borrar registro de Guia</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>¿Estas seguro de borrar el registro de Guia?</h4>
+
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-primary" data-dismiss="modal">Cancelar</a>
+                        <a href="#" class="btn btn-primary" onclick="ConfirmarBorrar()">Confirmar</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+<script>
+    $("#LoadingStatus").html("Loading...");
+    $.get("/Home/GetGuiaList", null, DataBind);
+    function DataBind(guiaList) {
+        //This Code For Receive All Data From Controller And Show It In Client Side
+        var SetData = $("#SetGuiaList");
+        for (var i = 0; i < guiaList.length; i++) {
+            var Data = "<tr class='row_" + guiaList[i].numeroGuia + "'>" +
+                "<td>" + guiaList[i].numeroGuia + "</td>" +
+                "<td>" + guiaList[i].rut + "</td>" +
+                "<td>" + guiaList[i].nombreRazonSocial + "</td>" +
+                "<td>" + guiaList[i].direccion + "</td>" +
+                "<td>" + guiaList[i].telefono + "</td>" +
+                "<td>" + guiaList[i].fechaIngreso + "</td>" +
+                "<td>" + "<a href='#' class='btn btn-warning' onclick='EditColaborador(" + guiaList[i].numeroGuia + ")' ><span class='glyphicon glyphicon-edit'></span></a>" + "</td>" +
+                "<td>" + "<a href='#' class='btn btn-danger' onclick='BorrarRegistroColaborador(" + guiaList[i].numeroGuia + ")'><span class='glyphicon glyphicon-trash'></span></a>" + "</td>" +
+                "</tr>";
+            SetData.append(Data);
+            $("#LoadingStatus").html(" ");
+
+        }
+    }
+
+    // Modal Agregar Colaborador
+
+    function AddNewGuia(numeroGuia) {
+        $("#form")[0].reset();
+        $("#ModalTitle").html("Agregar colaborador");
+        $("#MyModal").modal();
+
+    }
+
+    //Show The Popup Modal For Edit Student Record
+
+    function EditGuia(numeroGuia) {
+        var url = "/Home/GetGuiaByNumeroGuia?numeroGuia=" + numeroGuia;
+        $("#ModalTitle").html("Actualizar datos de colaboradores");
+        $("#MyModal").modal();
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                $("#guiaNumeroGuia").val(obj.numeroGuia);
+                $("#guiaRut").val(obj.rut);
+                $("#guiaNombreRazonSocial").val(obj.nombreRazonSocial);
+                $("#guiaDireccion").val(obj.direccion);
+                $("#guiaTelefono").val(obj.telefono);
+                $("#guiaFechaIngreso").val(obj.fechaIngreso);          
+            }
+        })
+    }
+
+    // Guardar Colaborador
+
+    $("#GuardarGuia").click(function () {
+        var data = $("#SubmitForm").serialize();
+        $.ajax({
+            type: "Post",
+            url: "/Home/GuardarGuiaInDatabase",
+            data: data,
+            success: function (result) {
+                alert("¡Completado!");
+                window.location.href = "/Home/Guia";
+                $("#MyModal").modal("hide");
+            }
+        })
+    })
+
+    function BorrarRegistroGuia(numeroGuia) {
+        $("#guiaNumeroGuia").val(numeroGuia);
+        $("#ConfirmarBorrar").modal("show");
+
+    }
+    function ConfirmarBorrar() {
+        var guiaNumeroGuia = $("#guiaNumeroGuia").val();
+        $.ajax({
+            type: "POST",
+            url: "Home/BorrarRegistroGuia?numeroGuia=" + guiaNumeroGuia,
+            success: function (result) {
+                alert("¡Colaborador Eliminado!");
+                window.location.href = "/Guia";
+                $("#ConfirmarBorrar").modal("hide");
+                $(".row_" + colabRun).remove();
+
+            }
+        })
+    }
+
+
+
+</script>
+
+

@@ -21,12 +21,10 @@ namespace TestPlantilla.Models
     
         public int idHojaRutaDetalle { get; set; }
         public int idHojaRuta { get; set; }
-        public int idCliente { get; set; }
         public int numeroGuia { get; set; }
         public Nullable<System.DateTime> fechaSalida { get; set; }
         public Nullable<System.DateTime> fechaLlegada { get; set; }
     
-        public virtual auxiliar auxiliar { get; set; }
         public virtual hojaRuta hojaRuta { get; set; }
         public virtual ICollection<hojaRutaDetalleGuia> hojaRutaDetalleGuia { get; set; }
     }

@@ -21,6 +21,11 @@ namespace TestPlantilla.Controllers
             ViewBag.Title = "Colaboradores";
             return View();
         }
+        public ActionResult Guia()
+        {
+            ViewBag.Title = "Guias";
+            return View();
+        }
 
         public ActionResult Vehiculos()
         {
@@ -32,7 +37,7 @@ namespace TestPlantilla.Controllers
         {
             return View();
         }
-
+        // COLABORADORES**********************************************************************************************
         public JsonResult GetColaboradorList()
         {
             List<ColaboradorViewModel> colabList = db.colaborador.Where(x => x.activo == true).Select(x => new ColaboradorViewModel
@@ -122,7 +127,8 @@ namespace TestPlantilla.Controllers
 
         }
 
-        //hola que hace
+        // VEHICULOS**********************************************************************************************
+
         public JsonResult GetVehiculoList()
         {
             List<VehiculoViewModel> vehiculoList = db.vehiculo.Where(x => x.activo == true).Select(x => new VehiculoViewModel
@@ -139,7 +145,7 @@ namespace TestPlantilla.Controllers
             }).ToList();
             return Json(vehiculoList, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetVehiculoByPatente(string patente)
+        public JsonResult GetVehiculoByPatente(String patente)
         {
             vehiculo model = db.vehiculo.Where(x => x.patente == patente).SingleOrDefault();
             string value = string.Empty;
@@ -212,6 +218,94 @@ namespace TestPlantilla.Controllers
 
         }
 
+        // GUIAS******************************************************************************************************
+        public JsonResult GetGuiaList()
+        {
+            List<GuiasViewModel> guiaList = db.guias.Where(x => x.estado == true).Select(x => new GuiasViewModel
+            {
+                numeroGuia = x.numeroGuia,
+                rut = x.rut,
+                nombreRazonSocial = x.nombreRazonSocial,
+                direccion = x.direccion,
+                telefono = x.telefono,
+                fechaIngreso = x.fechaIngreso,
 
+                
+
+            }).ToList();
+            return Json(guiaList, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetGuiaByNumeroGuia(int numeroGuia)
+        {
+            guias model = db.guias.Where(x => x.numeroGuia == numeroGuia).SingleOrDefault();
+            string value = string.Empty;
+            value = JsonConvert.SerializeObject(model, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            return Json(value, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GuardarGuiaInDatabase(GuiasViewModel model)
+        {
+            var result = false;
+            try
+            {
+                guias ve = db.guias.Where(x => x.numeroGuia == model.numeroGuia).SingleOrDefault();
+                string value = string.Empty;
+                if (ve != null)
+                {
+                    guias gui = db.guias.SingleOrDefault(s => s.numeroGuia == model.numeroGuia);
+
+                    gui.numeroGuia = model.numeroGuia;
+                    gui.rut = model.rut;
+                    gui.nombreRazonSocial = model.nombreRazonSocial;
+                    gui.direccion = model.direccion;
+                    gui.telefono = model.telefono;
+                    gui.fechaIngreso = model.fechaIngreso;
+                    gui.estado = true;
+                    db.SaveChanges();
+                    result = true;
+                }
+                else
+                {
+                    guias gui = new guias();
+                    gui.numeroGuia = model.numeroGuia;
+                    gui.rut = model.rut;
+                    gui.nombreRazonSocial = model.nombreRazonSocial;
+                    gui.direccion = model.direccion;
+                    gui.telefono = model.telefono;
+                    gui.fechaIngreso = model.fechaIngreso;
+                    gui.estado = true;
+                    db.guias.Add(gui);
+                    db.SaveChanges();
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult BorrarRegistroGuias(int numeroGuia)
+        {
+            bool result = false;
+            guias gui = db.guias.SingleOrDefault(x => x.estado == true && x.numeroGuia == numeroGuia);
+            if (gui != null)
+            {
+                gui.estado = false;
+                db.SaveChanges();
+                result = true;
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
     }
+   
+
+
+    
 }
