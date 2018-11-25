@@ -38,6 +38,11 @@ namespace TestPlantilla.Controllers
         {
             return View();
         }
+
+        public ActionResult HojaRutaDetalle()
+        {
+            return View();
+        }
         // COLABORADORES**********************************************************************************************
         public JsonResult GetColaboradorList()
         {

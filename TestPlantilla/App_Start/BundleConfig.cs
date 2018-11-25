@@ -21,6 +21,7 @@ namespace TestPlantilla
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
+                      "~/Scripts/googleMap.js",
                       "~/Content/vendor/jquery-3.2.1.min.js",
                       "~/Scripts/DataTables/jquery.dataTables.min.js",
                       "~/Scripts/DataTables/dataTables.bootstrap4.min.js",

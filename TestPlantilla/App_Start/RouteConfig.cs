@@ -17,8 +17,12 @@ namespace TestPlantilla
                 name: "HojaRuta",
                 url: "HojaRuta",
                 defaults: new
-                { controller = "Home",action = "hojaRuta",
-                }
+                { controller = "Home",action = "hojaRuta" }
+            );
+            routes.MapRoute(
+                name: "HojaRutaDetalle",
+                url: "HojaRutaDetalle",
+                defaults: new { controller = "Home", action = "HojaRutaDetalle" }
             );
             routes.MapRoute(
                name: "Colaborador",
