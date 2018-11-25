@@ -16,7 +16,7 @@ namespace TestPlantilla.Controllers
         {
             return View();
         }
-
+       
         public ActionResult Colaborador()
         {
             ViewBag.Title = "Colaboradores";
@@ -36,8 +36,29 @@ namespace TestPlantilla.Controllers
 
         public ActionResult HojaRuta()
         {
+            List<guias> guiasList = db.guias.ToList();
+            ViewBag.ListOfGuias = new SelectList(guiasList, "numeroGuia", "nombre", "direccion", "ciudad", "rut" );
+            List<vehiculo> vehiculoList = db.vehiculo.ToList();
+            ViewBag.ListOfVehiculos = new SelectList(vehiculoList, "patente");
             return View();
         }
+
+        // HOJA DE RUTA************************************************************************************************
+        public JsonResult GetHojaRutaList()
+        {
+            List<HojaRutaViewModel> colabList = db.hojaRuta.Where(x => x.estado == 0).Select(x => new HojaRutaViewModel
+            {
+                idHojaRuta = x.idHojaRuta,
+                idVehiculo = x.idVehiculo,
+                fechaCreacion = x.fechaCreacion,
+                fechaIngreso = x.fechaIngreso,
+                fechaModificacion = x.fechaModificacion,
+                
+
+            }).ToList();
+            return Json(colabList, JsonRequestBehavior.AllowGet);
+        }
+
         // COLABORADORES**********************************************************************************************
         public JsonResult GetColaboradorList()
         {
