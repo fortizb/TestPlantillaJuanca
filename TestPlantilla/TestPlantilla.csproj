@@ -236,6 +236,7 @@
     <Content Include="bin\TestPlantilla.dll" />
     <Content Include="bin\TestPlantilla.pdb" />
     <Content Include="Content\css\font-face.css" />
+    <Content Include="Content\css\style.css" />
     <Content Include="Content\css\theme.css" />
     <Content Include="Content\fonts\poppins\poppins-v5-latin-100.svg" />
     <Content Include="Content\fonts\poppins\poppins-v5-latin-100italic.svg" />
@@ -375,6 +376,7 @@
       <DependentUpon>Model2.edmx</DependentUpon>
       <LastGenOutput>Model2.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\googleMap.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <EntityDeploy Include="Models\Model2.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
@@ -415,6 +417,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Vehiculos.cshtml" />
     <Content Include="Views\Home\Guia.cshtml" />
+    <Content Include="Views\Home\HojaRutaDetalle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
