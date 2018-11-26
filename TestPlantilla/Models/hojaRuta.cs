@@ -18,21 +18,23 @@ namespace TestPlantilla.Models
         {
             this.colaboradorHojaRuta = new HashSet<colaboradorHojaRuta>();
             this.costosHojaRuta = new HashSet<costosHojaRuta>();
+            this.guias = new HashSet<guias>();
             this.hojaRutaDetalle = new HashSet<hojaRutaDetalle>();
         }
     
         public int idHojaRuta { get; set; }
-        public string idVehiculo { get; set; }
+        public string patente { get; set; }
         public System.DateTime fechaCreacion { get; set; }
         public int fechaIngreso { get; set; }
         public Nullable<System.DateTime> fechaModificacion { get; set; }
-        public Nullable<int> estado { get; set; }
+        public string estado { get; set; }
     
         public virtual ICollection<colaboradorHojaRuta> colaboradorHojaRuta { get; set; }
         public virtual ICollection<costosHojaRuta> costosHojaRuta { get; set; }
-        public virtual estadoHojaRuta estadoHojaRuta { get; set; }
         public virtual fechaTramo fechaTramo { get; set; }
+        public virtual ICollection<guias> guias { get; set; }
         public virtual vehiculo vehiculo { get; set; }
+        public virtual vehiculo vehiculo1 { get; set; }
         public virtual ICollection<hojaRutaDetalle> hojaRutaDetalle { get; set; }
     }
 }

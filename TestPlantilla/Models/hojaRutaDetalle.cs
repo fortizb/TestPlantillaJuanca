@@ -14,18 +14,12 @@ namespace TestPlantilla.Models
     
     public partial class hojaRutaDetalle
     {
-        public hojaRutaDetalle()
-        {
-            this.hojaRutaDetalleGuia = new HashSet<hojaRutaDetalleGuia>();
-        }
-    
         public int idHojaRutaDetalle { get; set; }
         public int idHojaRuta { get; set; }
-        public int numeroGuia { get; set; }
         public Nullable<System.DateTime> fechaSalida { get; set; }
         public Nullable<System.DateTime> fechaLlegada { get; set; }
+        public string observaciones { get; set; }
     
         public virtual hojaRuta hojaRuta { get; set; }
-        public virtual ICollection<hojaRutaDetalleGuia> hojaRutaDetalleGuia { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace TestPlantilla.Models
         public int idHojaRuta { get; set; }
         public string concepto { get; set; }
         public int numDocumento { get; set; }
-        public int idProveedor { get; set; }
+        public string proveedor { get; set; }
         public int monto { get; set; }
         public Nullable<System.DateTime> fecha { get; set; }
     

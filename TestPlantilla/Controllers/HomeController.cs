@@ -11,7 +11,7 @@ namespace TestPlantilla.Controllers
 {
     public class HomeController : Controller
     {
-        dimacodevEntities1 db = new dimacodevEntities1();
+        dimacodevEntities db = new dimacodevEntities();
         public ActionResult Index()
         {
             return View();
@@ -20,6 +20,11 @@ namespace TestPlantilla.Controllers
         public ActionResult Colaborador()
         {
             ViewBag.Title = "Colaboradores";
+            return View();
+        }
+        public ActionResult HojaRutaDetalle()
+        {
+            ViewBag.Title = "Hoja Ruta detalle";
             return View();
         }
         public ActionResult Guia()
@@ -37,28 +42,34 @@ namespace TestPlantilla.Controllers
         public ActionResult HojaRuta()
         {
             List<guias> guiasList = db.guias.ToList();
-            ViewBag.ListOfGuias = new SelectList(guiasList, "numeroGuia", "nombre", "direccion", "ciudad", "rut" );
+            ViewBag.ListOfGuias = new SelectList(guiasList, "numeroGuia", "nombreRazonSocial", "direccion", "ciudad", "rut", "telefono" );
             List<vehiculo> vehiculoList = db.vehiculo.ToList();
             ViewBag.ListOfVehiculos = new SelectList(vehiculoList, "patente");
+            List<hojaRuta> hojaRutaList = db.hojaRuta.ToList();
+            ViewBag.ListOfHojaRuta = new SelectList(hojaRutaList, "idHojaRuta");
             return View();
         }
 
         // HOJA DE RUTA************************************************************************************************
-        public JsonResult GetHojaRutaList()
+       /* public JsonResult GetHojaRutaList()
         {
-            List<HojaRutaViewModel> colabList = db.hojaRuta.Where(x => x.estado == 0).Select(x => new HojaRutaViewModel
+           List<HojaRutaDetalleGuiaViewModel> rutaList = db.hojaRutaDetalleGuia.Where(x => x.idEstadoEntrega == 1).Select(x => new HojaRutaDetalleGuiaViewModel
             {
-                idHojaRuta = x.idHojaRuta,
-                idVehiculo = x.idVehiculo,
-                fechaCreacion = x.fechaCreacion,
-                fechaIngreso = x.fechaIngreso,
-                fechaModificacion = x.fechaModificacion,
+                idHrdGuia = x.idHrdGuia,
+                idHojaRutaDetalle = x.idHojaRutaDetalle,
+                numeroGuia = x.numeroGuia,
+                idEstadoEntrega = x.idEstadoEntrega,
+                observaciones = x.observaciones,
+                direccion = x.guias.direccion,
+                rut = x.guias.rut,
+                ciudad = x.guias.ciudad,
+                nombreRazonSocial = x.guias.nombreRazonSocial
                 
 
             }).ToList();
-            return Json(colabList, JsonRequestBehavior.AllowGet);
-        }
 
+            return Json(rutaList, JsonRequestBehavior.AllowGet);
+        }*/
         // COLABORADORES**********************************************************************************************
         public JsonResult GetColaboradorList()
         {
@@ -243,10 +254,10 @@ namespace TestPlantilla.Controllers
         // GUIAS******************************************************************************************************
         public JsonResult GetGuiaList()
         {
-            List<GuiasViewModel> guiaList = db.guias.Where(x => x.estado == true).Select(x => new GuiasViewModel
+            List<GuiasViewModel> guiaList = db.guias.Where(x => x.estado == "pendiente").Select(x => new GuiasViewModel
             {
                 numeroGuia = x.numeroGuia,
-                nombreRazonSocial = x.nombreRazonSocial,
+                nombre = x.nombre,
                 rut = x.rut,
                 ciudad = x.ciudad,
                 direccion = x.direccion,
@@ -272,24 +283,25 @@ namespace TestPlantilla.Controllers
             var result = false;
             try
             {
-                guias ve = db.guias.Where(x => x.numeroGuia == model.numeroGuia).SingleOrDefault();
+                guias g = db.guias.Where(x => x.numeroGuia == model.numeroGuia).SingleOrDefault();
                 string value = string.Empty;
-                if (ve != null)
+                if (g != null)
                 {
                     guias gui = db.guias.SingleOrDefault(s => s.numeroGuia == model.numeroGuia);
 
                     gui.numeroGuia = model.numeroGuia;
                     gui.rut = model.rut;
-                    gui.nombreRazonSocial = model.nombreRazonSocial;
+                    gui.nombre = model.nombre;
                     gui.ciudad = model.ciudad;
                     gui.direccion = model.direccion;
                     gui.telefono = model.telefono;
-                    if(model.observacion == null)
+                    gui.idHojaRuta = 2;
+                    if (model.observacion == null)
                     {
                         model.observacion = "Sin Comentarios";
                     }
                     gui.observacion = model.observacion;
-                    gui.estado = true;
+                    gui.estado = "Pendiente";
                     db.SaveChanges();
                     result = true;
                 }
@@ -298,7 +310,7 @@ namespace TestPlantilla.Controllers
                     guias gui = new guias();
                     gui.numeroGuia = model.numeroGuia;
                     gui.rut = model.rut;
-                    gui.nombreRazonSocial = model.nombreRazonSocial;
+                    gui.nombre = model.nombre;
                     gui.ciudad = model.ciudad;
                     gui.direccion = model.direccion;
                     gui.telefono = model.telefono;
@@ -308,7 +320,8 @@ namespace TestPlantilla.Controllers
                         model.observacion = "Sin Comentarios";
                     }
                     gui.observacion = model.observacion;
-                    gui.estado = true;
+                    gui.estado = "pendiente";
+                    gui.idHojaRuta = 2;
                     db.guias.Add(gui);
                     db.SaveChanges();
                     result = true;
@@ -325,10 +338,10 @@ namespace TestPlantilla.Controllers
         public JsonResult BorrarRegistroGuias(int numeroGuia)
         {
             bool result = false;
-            guias gui = db.guias.SingleOrDefault(x => x.estado == true && x.numeroGuia == numeroGuia);
+            guias gui = db.guias.SingleOrDefault(x => x.estado == "pendiente" && x.numeroGuia == numeroGuia);
             if (gui != null)
             {
-                gui.estado = false;
+                gui.estado = "nose";
                 db.SaveChanges();
                 result = true;
             }

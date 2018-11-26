@@ -25,16 +25,14 @@ namespace TestPlantilla.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<colaborador> colaboradors { get; set; }
-        public DbSet<colaboradorHojaRuta> colaboradorHojaRutas { get; set; }
-        public DbSet<costosHojaRuta> costosHojaRutas { get; set; }
-        public DbSet<estadoEntrega> estadoEntregas { get; set; }
-        public DbSet<estadoHojaRuta> estadoHojaRutas { get; set; }
-        public DbSet<fechaTramo> fechaTramoes { get; set; }
-        public DbSet<guia> guias { get; set; }
-        public DbSet<hojaRuta> hojaRutas { get; set; }
-        public DbSet<hojaRutaDetalle> hojaRutaDetalles { get; set; }
-        public DbSet<hojaRutaDetalleGuia> hojaRutaDetalleGuias { get; set; }
-        public DbSet<vehiculo> vehiculoes { get; set; }
+        public DbSet<colaborador> colaborador { get; set; }
+        public DbSet<colaboradorHojaRuta> colaboradorHojaRuta { get; set; }
+        public DbSet<costosHojaRuta> costosHojaRuta { get; set; }
+        public DbSet<fechaTramo> fechaTramo { get; set; }
+        public DbSet<guias> guias { get; set; }
+        public DbSet<hojaRuta> hojaRuta { get; set; }
+        public DbSet<hojaRutaDetalle> hojaRutaDetalle { get; set; }
+        public DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public DbSet<vehiculo> vehiculo { get; set; }
     }
 }
