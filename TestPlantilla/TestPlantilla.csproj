@@ -180,7 +180,7 @@
     <Compile Include="Models\hojaRutaDetalle.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\HojaRutaDetalleGuiaViewModel.cs" />
+    <Compile Include="Models\HojaRutaViewModel.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

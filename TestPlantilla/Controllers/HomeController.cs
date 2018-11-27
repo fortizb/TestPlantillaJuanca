@@ -41,35 +41,25 @@ namespace TestPlantilla.Controllers
 
         public ActionResult HojaRuta()
         {
-            List<guias> guiasList = db.guias.ToList();
-            ViewBag.ListOfGuias = new SelectList(guiasList, "numeroGuia", "nombreRazonSocial", "direccion", "ciudad", "rut", "telefono" );
-            List<vehiculo> vehiculoList = db.vehiculo.ToList();
-            ViewBag.ListOfVehiculos = new SelectList(vehiculoList, "patente");
-            List<hojaRuta> hojaRutaList = db.hojaRuta.ToList();
-            ViewBag.ListOfHojaRuta = new SelectList(hojaRutaList, "idHojaRuta");
+            ViewBag.Title = "HojaRuta";
             return View();
         }
 
         // HOJA DE RUTA************************************************************************************************
-       /* public JsonResult GetHojaRutaList()
+       public JsonResult GetHojaRutaList()
         {
-           List<HojaRutaDetalleGuiaViewModel> rutaList = db.hojaRutaDetalleGuia.Where(x => x.idEstadoEntrega == 1).Select(x => new HojaRutaDetalleGuiaViewModel
+           List<HojaRutaViewModel> rutaList = db.hojaRuta.Where(x => x.estado == "1").Select(x => new HojaRutaViewModel
             {
-                idHrdGuia = x.idHrdGuia,
-                idHojaRutaDetalle = x.idHojaRutaDetalle,
-                numeroGuia = x.numeroGuia,
-                idEstadoEntrega = x.idEstadoEntrega,
-                observaciones = x.observaciones,
-                direccion = x.guias.direccion,
-                rut = x.guias.rut,
-                ciudad = x.guias.ciudad,
-                nombreRazonSocial = x.guias.nombreRazonSocial
-                
+                idHojaRuta = x.idHojaRuta,
+                patente = x.patente,
+                fechaCreacion = x.fechaCreacion,
+                fechaIngreso = x.fechaIngreso,
+                fechaModificacion = x.fechaModificacion
 
             }).ToList();
 
             return Json(rutaList, JsonRequestBehavior.AllowGet);
-        }*/
+        }
         // COLABORADORES**********************************************************************************************
         public JsonResult GetColaboradorList()
         {
