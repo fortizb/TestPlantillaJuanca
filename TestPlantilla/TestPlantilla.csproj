@@ -163,6 +163,7 @@
     <Compile Include="Models\colaboradorHojaRuta.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ColaboradorHRViewModel.cs" />
     <Compile Include="Models\ColaboradorViewModel.cs" />
     <Compile Include="Models\costosHojaRuta.cs">
       <DependentUpon>Model1.tt</DependentUpon>

@@ -13,5 +13,8 @@ namespace TestPlantilla.Models
         public int fechaIngreso { get; set; }
         public Nullable<System.DateTime> fechaModificacion { get; set; }
         public string estado { get; set; }
+        public int idColHojaRuta { get; set; }
+        public int run { get; set; }
+        public string nombre { get; set; }
     }
 }

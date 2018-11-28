@@ -11,7 +11,7 @@
             </div>
         </div>
 
-        <a href="#" class="btn btn-info" onclick="AddNewHojaRuta(0)">Añadir Hoja Ruta</a> <br /><br />
+        <a href="#" class="btn btn-info" onclick="AddNewHojaRuta(0)">Crear Hoja de Ruta</a> <br /><br />
 
         <table class="table table-bordered table-striped tablecontainer" style="width: 100%">
             <thead>
@@ -29,6 +29,51 @@
             </tbody>
         </table>
 
+        @*Create A Popup Modal With Registration Form For Add O*@
+
+        <div class="modal fadeOut" id="ModalHR">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="close" data-dismiss="modal">&times;</a>
+                        <h4 id="ModalTitle"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form">
+                            <fieldset id="SubmitForm">
+                                @Html.HiddenFor(m => m.idHojaRuta, new { @id = "HRIdHojaRuta" })
+
+                                <div class="form-group">
+                                    @Html.DropDownListFor(m => m.patente, ViewBag.ListOfVehiculo as SelectList, "--Seleccione Vehiculo--", new { @id = "HRPatente", @class = "form-control" })
+                                </div>
+                                
+                                
+    
+    
+    
+    
+    
+    
+                                @* 
+                                  <div class="form-group">
+                                    @Html.DropDownListFor(m => m.run, ViewBag.ListOfChofer as SelectList, "--Seleccione Chofer--", new { @id = "DropDwn2", @class = "form-control" })
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.DropDownListFor(m => m.run, ViewBag.ListOfPeoneta as SelectList, "--Seleccione Peoneta--", new { @id = "DropDwn3", @class = "form-control" })
+                                </div>
+                                  *@
+                                <div class="form-group">
+                                    <a href="#" class="btn btn-block btn-danger" id="GuardarHojaRuta">Save</a>
+                                </div>
+
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 }
 <script>
@@ -42,16 +87,57 @@
                 "<td>" + rutaList[i].idHojaRuta + "</td>" +
                 "<td>" + rutaList[i].patente + "</td>" +
                 "<td>" + rutaList[i].fechaCreacion + "</td>" +
-                "<td>" + rutaList[i].fechaInicio + "</td>" +
+                "<td>" + rutaList[i].fechaIngreso + "</td>" +
                 "<td>" + rutaList[i].fechaModificacion + "</td>" +
-                "<td>" + "<a href='#' class='btn btn-warning' onclick='EditColaborador(" + rutaList[i].idHojaRuta + ")' ><span class='glyphicon glyphicon-edit'></span></a>" + "</td>" +
-                "<td>" + "<a href='#' class='btn btn-danger' onclick='BorrarRegistroColaborador(" + rutaList[i].idHojaRuta + ")'><span class='glyphicon glyphicon-trash'></span></a>" + "</td>" +
+                "<td>" + "<a href='Guia' class='btn  btn-warning' onclick='AgregarGuia(" + rutaList[i].idHojaRuta + ")' ><span class='glyphicon glyphicon - edit'></span></a>" + "</td>" +
                 "</tr>";
             SetData.append(Data1);
             $("#LoadingStatus").html(" ");
 
         }
     }
+    function AddNewHojaRuta(idColHojaRuta) {
+        $("#form")[0].reset();
+        $("#idColHojaRuta").val(0);
+        $("#HRPatente option:selected").text("--Seleccione Vehiculo--");
+        $("#ModalTitle").html("Crear Hoja de Ruta");
+        $("#ModalHR").modal();
+
+    }
+
+    function EditHojaRuta(idHojaRuta) {
+        var url = "/Home/GetHojaRutaById?idHojaRuta=" + idHojaRuta;
+        $("#ModalTitle").html("Actualizar datos de colaboradores");
+        $("#ModalHR").modal();
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                $("#HRIdHojaRuta").val(obj.idHojaRuta);
+                $("#guiaNombre").val(obj.nombre);
+                $("#guiaRut").val(obj.rut);
+                $("#guiaCiudad").val(obj.ciudad);
+                $("#guiaDireccion").val(obj.direccion);
+                $("#guiaTelefono").val(obj.telefono);
+                $("#guiaObservacion").val(obj.observacion);
+            }
+        })
+    }
+
+    $("#GuardarHojaRuta").click(function () {
+        var data = $("#SubmitForm").serialize();
+        $.ajax({
+            type: "Post",
+            url: "/Home/GuardarColaboradorHojaRutaInDatabase",
+            data: data,
+            success: function (result) {
+                alert("¡Completado!");
+                window.location.href = "/Home/HojaRuta";
+                $("#ModalHR").modal("hide");
+            }
+        })
+    })
 
 </script>
 

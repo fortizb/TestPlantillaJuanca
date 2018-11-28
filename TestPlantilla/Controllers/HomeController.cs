@@ -22,11 +22,7 @@ namespace TestPlantilla.Controllers
             ViewBag.Title = "Colaboradores";
             return View();
         }
-        public ActionResult HojaRutaDetalle()
-        {
-            ViewBag.Title = "Hoja Ruta detalle";
-            return View();
-        }
+        
         public ActionResult Guia()
         {
             ViewBag.Title = "Guias";
@@ -42,7 +38,18 @@ namespace TestPlantilla.Controllers
         public ActionResult HojaRuta()
         {
             ViewBag.Title = "HojaRuta";
+            List<colaborador> colaboList = db.colaborador.Where(x => x.cargo == "Chofer").ToList();
+            ViewBag.ListOfChofer = new SelectList(colaboList, "run", "nombre", "rut", "apellidoPaterno", "apellidoMaterno");
+
+         
+            List<colaborador> colaboList2 = db.colaborador.Where(x => x.cargo == "Peoneta").ToList();
+            ViewBag.ListOfPeoneta = new SelectList(colaboList2, "run", "nombre", "rut", "apellidoPaterno", "apellidoMaterno");
+
+      
+            List<vehiculo> vehList = db.vehiculo.Where(x => x.activo == true).ToList();
+            ViewBag.ListOfVehiculo = new SelectList(vehList, "patente", "patente");
             return View();
+
         }
 
         // HOJA DE RUTA************************************************************************************************
@@ -54,11 +61,53 @@ namespace TestPlantilla.Controllers
                 patente = x.patente,
                 fechaCreacion = x.fechaCreacion,
                 fechaIngreso = x.fechaIngreso,
-                fechaModificacion = x.fechaModificacion
+                fechaModificacion = x.fechaModificacion,
 
             }).ToList();
 
             return Json(rutaList, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GuardarColaboradorHojaRutaInDatabase(HojaRutaViewModel model)
+        {
+            var result = false;
+            try
+            {
+                if (model.idHojaRuta > 0)
+                {
+                    hojaRuta hoja = db.hojaRuta.SingleOrDefault(s => s.idHojaRuta == model.idHojaRuta);
+                    hoja.patente = model.patente;
+                    hoja.fechaModificacion = DateTime.Now;
+                    db.SaveChanges();
+                    result = true;
+                }
+                else
+                {
+                    fechaTramo fecha = new fechaTramo();
+                    fecha.fechaIngreso = 20181128;
+                    fecha.dia = 28;
+                    fecha.mes = 11;
+                    fecha.anio = 2018;
+                    fecha.semestre = "2";
+                    fecha.trimestre = "3";
+                    fecha.cuatrimestre = "3";
+                            
+                    hojaRuta hoja = new hojaRuta();
+                    hoja.fechaCreacion = DateTime.Now;
+                    hoja.fechaIngreso = fecha.fechaIngreso;
+                    hoja.patente = model.patente;
+                    hoja.estado = "1";
+                    db.hojaRuta.Add(hoja);
+                    db.SaveChanges();
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         // COLABORADORES**********************************************************************************************
         public JsonResult GetColaboradorList()
@@ -285,7 +334,7 @@ namespace TestPlantilla.Controllers
                     gui.ciudad = model.ciudad;
                     gui.direccion = model.direccion;
                     gui.telefono = model.telefono;
-                    gui.idHojaRuta = 2;
+                    gui.idHojaRuta = model.idHojaRuta;
                     if (model.observacion == null)
                     {
                         model.observacion = "Sin Comentarios";

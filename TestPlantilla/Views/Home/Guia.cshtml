@@ -7,12 +7,9 @@
 
         <div class="row">
             <div class="col">
-                <h3 class="title-5 m-b-35" style="margin-top: 1em;">Gestión de colaboradores</h3>
+                <h3 class="title-5 m-b-35" style="margin-top: 1em;">Guias de Despacho</h3>
             </div>
         </div>
-
-        <a href="#" class="btn btn-info" onclick="AddNewGuia(0)">Añadir Guia</a> <br /><br />
-
         <table class="table table-bordered table-striped tablecontainer" style="width: 100%">
             <thead>
                 <tr>
@@ -24,8 +21,7 @@
                     <th>Telefono</th>
                     <th>Fecha Ingreso</th>
                     <th>Observaciones</th>
-                    <th>EDITAR</th>
-                    <th>BORRAR</th>
+                    <th>AGREGAR</th>
                 </tr>
             </thead>
             <tbody id="SetGuiaList">
@@ -118,8 +114,7 @@
                 "<td>" + guiaList[i].telefono + "</td>" +
                 "<td>" + guiaList[i].fechaIngreso + "</td>" +
                 "<td>" + guiaList[i].observacion + "</td>" +
-                "<td>" + "<a href='#' class='btn btn-warning' onclick='EditColaborador(" + guiaList[i].numeroGuia + ")' ><span class='glyphicon glyphicon-edit'></span></a>" + "</td>" +
-                "<td>" + "<a href='#' class='btn btn-danger' onclick='BorrarRegistroColaborador(" + guiaList[i].numeroGuia + ")'><span class='glyphicon glyphicon-trash'></span></a>" + "</td>" +
+                "<td>" + "<a href='#' class='btn btn-warning' onclick='EditGuia(" + guiaList[i].numeroGuia + ")' ><span class='glyphicon glyphicon-edit'></span></a>" + "</td>" +
                 "</tr>";
             SetData.append(Data);
             $("#LoadingStatus").html(" ");
@@ -127,20 +122,30 @@
         }
     }
 
-    // Modal Agregar Colaborador
-
-    function AddNewGuia(numeroGuia) {
-        $("#form")[0].reset();
-        $("#ModalTitle").html("Agregar colaborador");
-        $("#MyModal").modal();
-
-    }
-
-    //Show The Popup Modal For Edit Student Record
-
+    //Show The Popup Modal For Edit Guia Record
     function EditGuia(numeroGuia) {
         var url = "/Home/GetGuiaByNumeroGuia?numeroGuia=" + numeroGuia;
-        $("#ModalTitle").html("Actualizar datos de colaboradores");
+        $("#ModalTitle").html("Actualizar datos de Guias");
+        $("#MyModal").modal();
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                $("#guiaNumeroGuia").val(obj.numeroGuia);
+                $("#guiaNombre").val(obj.nombre);
+                $("#guiaRut").val(obj.rut);
+                $("#guiaCiudad").val(obj.ciudad);
+                $("#guiaDireccion").val(obj.direccion);
+                $("#guiaTelefono").val(obj.telefono);
+                $("#guiaFechaIngreso").val(obj.fechaIngreso);
+                $("#guiaObservacion").val(obj.observacion);
+            }
+        })
+    }
+    function EditGuia(numeroGuia) {
+        var url = "/Home/GetGuiaByNumeroGuia?numeroGuia=" + numeroGuia;
+        $("#ModalTitle").html("Actualizar datos de Guias");
         $("#MyModal").modal();
         $.ajax({
             type: "GET",
